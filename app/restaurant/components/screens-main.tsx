@@ -912,7 +912,7 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '4px' }}>
       <div>
         <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--fg)', letterSpacing: '-0.02em', margin: '0 0 4px 0' }}>
-          История визитов и Отчеты
+          История визитов и Отчеты (Новая версия)
         </h2>
         <p style={{ margin: 0, color: 'var(--muted)', fontSize: '13px', marginBottom: '16px' }}>
           Архив обслуженных столов и скачивание финансовых отчетов за любой период
