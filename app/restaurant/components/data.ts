@@ -70,7 +70,7 @@ export const ADMINS: AdminUser[] = [
   { id: "adm-aisha", name: "Аиша", role: "Администратор", pin: "2222" },
   { id: "adm-almas", name: "Алмас", role: "Администратор", pin: "3333" },
   { id: "adm-ergali", name: "Ергали", role: "Администратор", pin: "4444" },
-  { id: "adm-elaman", name: "Еламан", role: "Старший администратор", pin: "5555" },
+  { id: "adm-elaman", name: "Еламан", role: "Старший администратор", pin: "666" },
 ];
 
 export const ZONES: Zone[] = [
