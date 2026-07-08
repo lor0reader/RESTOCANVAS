@@ -89,6 +89,22 @@
   .app-content {
     padding: 12px !important;
   }
+
+  .hide-mobile {
+    display: none !important;
+  }
+  .show-mobile-block {
+    display: block !important;
+  }
+  .show-mobile-inline {
+    display: inline !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .show-mobile-block, .show-mobile-inline {
+    display: none !important;
+  }
 }
 
 @keyframes fadeIn {

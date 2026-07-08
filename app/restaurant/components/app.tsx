@@ -335,7 +335,7 @@ export default function RestoApp() {
             </div>
             <div style={{ lineHeight: 1.1 }}>
               <div style={{ fontWeight: 700, fontSize: '14px', letterSpacing: '-0.01em' }}>RestoCanvas</div>
-              <div style={{ fontSize: '10px', color: 'var(--muted)' }}>Схема и резервы</div>
+              <div style={{ fontSize: '10px', color: 'var(--muted)' }} className="hide-mobile">Схема и резервы</div>
             </div>
           </div>
         </div>
@@ -391,14 +391,20 @@ export default function RestoApp() {
               }}
             >
               <Icon name="check" size={12} style={{ color: hasUnsavedChanges ? 'white' : 'var(--muted)' }} />
-              <span>{hasUnsavedChanges ? "Сохранить изменения" : "Сохранено"}</span>
+              <span className="hide-mobile">{hasUnsavedChanges ? "Сохранить изменения" : "Сохранено"}</span>
+              <span className="show-mobile-inline">{hasUnsavedChanges ? "Сохранить" : "ОК"}</span>
             </button>
           )}
 
           {/* Active Employee User Info */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-muted)', padding: '4px 10px', borderRadius: '20px' }}>
             <Icon name="user" size={13} style={{ color: 'var(--muted)' }} />
-            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--fg-2)' }}>{currentUser.name}</span>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--fg-2)' }} className="hide-mobile">
+              {currentUser.name}
+            </span>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--fg-2)' }} className="show-mobile-inline">
+              {currentUser.name.split(' (')[0]}
+            </span>
             <button
               onClick={() => handleSetCurrentUser(null)}
               style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--bad)', display: 'flex', alignItems: 'center', padding: '2px' }}
