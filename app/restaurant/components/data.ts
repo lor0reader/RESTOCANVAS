@@ -67,7 +67,7 @@ export interface TaskItem {
 
 export const ADMINS: AdminUser[] = [
   { id: "adm-elena", name: "Елена", role: "Управляющий директор", pin: "1111" },
-  { id: "adm-aisha", name: "Аиша", role: "Администратор", pin: "2222" },
+  { id: "adm-aisha", name: "Айша", role: "Администратор", pin: "2222" },
   { id: "adm-almas", name: "Алмас", role: "Администратор", pin: "3333" },
   { id: "adm-ergali", name: "Ергали", role: "Администратор", pin: "1014" },
   { id: "adm-elaman", name: "Еламан", role: "Старший администратор", pin: "666" },
