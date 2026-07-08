@@ -1,0 +1,88 @@
+{
+  "name": "ids-sklad",
+  "version": "1.0.0",
+  "description": "IDS Склад — учёт запасных частей (desktop build)",
+  "main": "electron/main.js",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "dev:lan": "next dev -H 0.0.0.0 -p 3000",
+    "next:build": "next build",
+    "next:start": "next start",
+    "start:web": "next start -p 3000",
+    "start:lan": "next start -H 0.0.0.0 -p 3000",
+    "warehouse": "next build && next start -H 0.0.0.0 -p 3000",
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "build": {
+    "appId": "kz.idsgeoradar.sklad",
+    "productName": "IDS Склад",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**",
+      "IDS Склад — offline.html",
+      "icons/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icons/icon-512.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "IDS Склад"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icons/icon-512.png",
+      "category": "public.app-category.business"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "icons/icon-512.png",
+      "category": "Office"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "electron": "^31.0.0",
+    "electron-builder": "^26.8.1",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.106.2",
+    "html5-qrcode": "^2.3.8",
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  }
+}

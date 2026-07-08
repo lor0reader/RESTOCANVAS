@@ -1,0 +1,463 @@
+/* ==========================================================================
+   RestoCanvas — Custom Stylesheet (Warm theme, canvas overrides, mobile touch)
+   ========================================================================== */
+
+/* Overrides root styles to use RestoCanvas warm palette */
+:root {
+  --bg: #fdfbf7;
+  --bg-elev: #ffffff;
+  --bg-muted: #f7f3ea;
+  --border: rgba(117, 86, 59, 0.12);
+  --border-strong: rgba(117, 86, 59, 0.22);
+  --fg: #2c1b10;
+  --fg-2: #4f3624;
+  --muted: #8e7d70;
+  --accent: #e76f51; /* terracotta orange */
+  --accent-2: #2a9d8f; /* teal accent */
+  --ok: #2a9d8f;
+  --warn: #f4a261;
+  --bad: #e76f51;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(79, 54, 36, 0.08);
+  --shadow: 0 4px 20px rgba(79, 54, 36, 0.08), 0 1px 0 rgba(79, 54, 36, 0.02);
+  --shadow-lg: 0 16px 48px rgba(79, 54, 36, 0.16);
+  --font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg: #120b08; /* deep espresso */
+  --bg-elev: #1a110c;
+  --bg-muted: #241913;
+  --border: rgba(243, 235, 227, 0.08);
+  --border-strong: rgba(243, 235, 227, 0.18);
+  --fg: #f3ebe3;
+  --fg-2: #dbcea7;
+  --muted: #9e8d80;
+  --accent: #f28469; /* bright warm orange */
+  --accent-2: #48b8a6;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.7);
+}
+
+/* Warm theme specific style overrides */
+[data-theme="resto"] {
+  --bg: #f9f5ed;
+  --bg-elev: #ffffff;
+  --bg-muted: #f0e6d6;
+  --border: rgba(90, 60, 40, 0.15);
+  --border-strong: rgba(90, 60, 40, 0.25);
+  --fg: #3d2414;
+  --fg-2: #5c3b24;
+  --muted: #947b6b;
+  --accent: #d95d39;
+  --accent-2: #b87d4b;
+  --shadow: 0 6px 18px rgba(90, 60, 40, 0.08);
+}
+
+/* Base resets & touch friendliness */
+* {
+  touch-action: manipulation; /* disables double-tap to zoom for snappier mobile taps */
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+}
+
+/* Mobile-responsive grid layout overrides */
+@media (max-width: 768px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 56px 1fr 60px; /* footer/nav bar on mobile */
+    height: 100vh;
+  }
+  
+  .app-sidebar {
+    display: none; /* hidden on mobile, replaced by bottom bar or toggled menu */
+  }
+  
+  .mobile-nav-active .app-sidebar {
+    display: flex;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    z-index: 100;
+    background: var(--bg-elev);
+    width: 100%;
+    animation: fadeIn 0.2s ease-out;
+  }
+  
+  .app-content {
+    padding: 12px !important;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Interactive Canvas Styles */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: var(--bg-elev);
+  background-image: radial-gradient(var(--border) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  user-select: none;
+}
+
+.canvas-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  transition: transform 0.05s linear;
+}
+
+/* Table element */
+.canvas-table {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-strong);
+  background: var(--bg-elev);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  font-weight: 600;
+  text-align: center;
+}
+
+.canvas-table:active {
+  transform: scale(0.98);
+}
+
+.canvas-table.circle {
+  border-radius: 50% !important;
+}
+
+.canvas-table.yurt {
+  border-radius: 50% !important;
+  border-width: 3px;
+  background: rgba(139, 90, 43, 0.05);
+}
+
+.canvas-table.rect {
+  border-radius: var(--radius-sm);
+}
+
+.canvas-table.topchan {
+  border-radius: var(--radius-sm);
+  border-width: 3px;
+  background: rgba(139, 90, 43, 0.05);
+}
+
+/* Table states styling */
+.canvas-table.status-free {
+  border-color: #2a9d8f;
+  background: rgba(42, 157, 143, 0.05);
+  color: #2a9d8f;
+}
+.canvas-table.status-free:hover {
+  box-shadow: 0 0 12px rgba(42, 157, 143, 0.25);
+}
+
+.canvas-table.status-occupied {
+  border-color: #e76f51;
+  background: rgba(231, 111, 81, 0.05);
+  color: #e76f51;
+}
+.canvas-table.status-occupied:hover {
+  box-shadow: 0 0 12px rgba(231, 111, 81, 0.25);
+}
+
+.canvas-table.status-reserved {
+  border-color: #f4a261;
+  background: rgba(244, 162, 97, 0.05);
+  color: #f4a261;
+}
+.canvas-table.status-reserved:hover {
+  box-shadow: 0 0 12px rgba(244, 162, 97, 0.25);
+}
+
+.canvas-table.status-cleaning {
+  border-color: #b5838d;
+  background: rgba(181, 131, 141, 0.05);
+  color: #b5838d;
+}
+.canvas-table.status-cleaning:hover {
+  box-shadow: 0 0 12px rgba(181, 131, 141, 0.25);
+}
+
+/* Active selected table in Editor mode */
+.canvas-table.selected {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.4), var(--shadow) !important;
+  z-index: 10;
+}
+
+/* Table sub info */
+.table-name {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.table-capacity {
+  font-size: 10px;
+  opacity: 0.75;
+  margin-top: 1px;
+}
+
+/* Drag handle in Editor mode */
+.canvas-drag-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: nwse-resize;
+  bottom: -6px;
+  right: -6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  z-index: 20;
+}
+
+/* Zoom/Controls Overlay */
+.canvas-controls {
+  position: absolute;
+  bottom: var(--gap);
+  right: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 30;
+}
+
+.canvas-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--fg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+  font-weight: bold;
+}
+
+.canvas-btn:hover {
+  background: var(--bg-muted);
+  transform: translateY(-1px);
+}
+
+.canvas-btn:active {
+  transform: translateY(0);
+}
+
+/* Virtual D-Pad for Mobile Table Moving */
+.mobile-dpad {
+  position: absolute;
+  bottom: var(--gap);
+  left: var(--gap);
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left center right"
+    ". down .";
+  gap: 6px;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 6px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+[data-theme="dark"] .mobile-dpad {
+  background: rgba(26, 17, 12, 0.7);
+}
+
+.dpad-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--fg);
+  font-weight: bold;
+}
+
+.dpad-btn:active {
+  background: var(--bg-muted);
+}
+
+/* Editor Toolbar */
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px var(--gap);
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Quick pin pad layout */
+.pin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 260px;
+  margin: 16px auto;
+}
+
+.pin-btn {
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elev);
+  color: var(--fg);
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.pin-btn:active {
+  background: var(--bg-muted);
+  transform: scale(0.95);
+}
+
+.pin-dots {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px 0;
+  height: 14px;
+}
+
+.pin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  transition: background 0.15s ease;
+}
+
+.pin-dot.filled {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Mobile bottom navigation bar */
+.mobile-bottom-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-bar {
+    display: flex;
+    grid-column: 1 / -1;
+    background: var(--bg-elev);
+    border-top: 1px solid var(--border);
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+  }
+  
+  .mobile-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 500;
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    gap: 4px;
+  }
+  
+  .mobile-bar-item.active {
+    color: var(--accent);
+  }
+  
+  /* Make app space adjustable */
+  .app-body {
+    padding-bottom: 60px; /* leaves room for bottom nav */
+  }
+
+  /* Mobile property editor drawer settings */
+  .table-properties-panel {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  .table-properties-panel .prop-group-main {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Touch target optimizations for mobile */
+  .canvas-btn {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 18px !important;
+  }
+
+  .mobile-dpad {
+    padding: 8px !important;
+    gap: 8px !important;
+  }
+
+  .dpad-btn {
+    width: 42px !important;
+    height: 42px !important;
+  }
+}
