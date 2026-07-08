@@ -382,7 +382,23 @@ export function TableCanvas({
     const activeBooking = getActiveBooking(tableId);
 
     setSeatingTableId(tableId);
-    setSeatingWaiter('');
+    
+    // Determine default waiter name
+    let defaultWaiter = '';
+    const savedUser = localStorage.getItem('resto.currentUser');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        if (user.role === 'admin') {
+          defaultWaiter = user.name.split(' (')[0];
+        }
+      } catch (e) {}
+    }
+    if (!defaultWaiter) {
+      defaultWaiter = localStorage.getItem('resto.lastWaiter') || '';
+    }
+    setSeatingWaiter(defaultWaiter);
+
     setSeatingGuestName(activeBooking ? activeBooking.guestName : 'Гость (Walk-in)');
     setSeatingGuestsCount(activeBooking ? activeBooking.guestsCount : table.capacity);
     setActiveDetailsTableId(null);
@@ -391,6 +407,11 @@ export function TableCanvas({
   const handleConfirmSeating = () => {
     if (!seatingTableId) return;
     const activeBooking = getActiveBooking(seatingTableId);
+
+    // Save waiter name to localStorage to prevent retyping on next seating
+    if (seatingWaiter.trim()) {
+      localStorage.setItem('resto.lastWaiter', seatingWaiter.trim());
+    }
 
     if (activeBooking && activeBooking.status === 'pending') {
       // Seat the reservation
