@@ -83,20 +83,7 @@
   }
   
   .app-sidebar {
-    display: none; /* hidden on mobile, replaced by bottom bar or toggled menu */
-  }
-  
-  .mobile-nav-active .app-sidebar {
-    display: flex;
-    position: fixed;
-    top: 56px;
-    left: 0;
-    right: 0;
-    bottom: 60px;
-    z-index: 100;
-    background: var(--bg-elev);
-    width: 100%;
-    animation: fadeIn 0.2s ease-out;
+    display: none !important; /* hidden on mobile, replaced by bottom bar */
   }
   
   .app-content {

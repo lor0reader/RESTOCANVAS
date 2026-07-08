@@ -22,7 +22,6 @@ export default function RestoApp() {
   const [activeZoneId, setActiveZoneId] = React.useState('zone-1');
   const [isEditing, setIsEditing] = React.useState(false);
   const [prefilledTableId, setPrefilledTableId] = React.useState<string | null>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   // Sync state variables
   const [syncStatus, setSyncStatus] = React.useState<{ phase: 'synced' | 'loading' | 'saving' | 'error'; label: string; details?: string }>({
@@ -313,28 +312,11 @@ export default function RestoApp() {
   );
 
   return (
-    <div className={`app ${isMobileMenuOpen ? 'mobile-nav-active' : ''}`} style={{ fontFamily: 'var(--font)' }}>
+    <div className="app" style={{ fontFamily: 'var(--font)' }}>
       
       {/* Top Header Navigation Panel */}
       <header className="app-top" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--gap)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Mobile hamburger menu toggle */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--fg)',
-              cursor: 'pointer',
-              padding: '6px',
-              borderRadius: '4px',
-              display: 'none'
-            }}
-            className="mobile-menu-toggle"
-          >
-            <Icon name={isMobileMenuOpen ? "x" : "menu"} size={22} />
-          </button>
-          
           {/* Brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div
@@ -437,7 +419,7 @@ export default function RestoApp() {
             
             {/* Nav links */}
             <button
-              onClick={() => { setRoute('canvas'); setIsMobileMenuOpen(false); }}
+              onClick={() => setRoute('canvas')}
               className={`nav-item ${route === 'canvas' ? 'active' : ''}`}
             >
               <Icon name="table" size={16} />
@@ -445,7 +427,7 @@ export default function RestoApp() {
             </button>
 
             <button
-              onClick={() => { setRoute('bookings'); setIsMobileMenuOpen(false); }}
+              onClick={() => setRoute('bookings')}
               className={`nav-item ${route === 'bookings' ? 'active' : ''}`}
             >
               <Icon name="calendar" size={16} />
@@ -459,7 +441,7 @@ export default function RestoApp() {
 
             {isAdmin && (
               <button
-                onClick={() => { setRoute('tasks'); setIsMobileMenuOpen(false); }}
+                onClick={() => setRoute('tasks')}
                 className={`nav-item ${route === 'tasks' ? 'active' : ''}`}
               >
                 <Icon name="check" size={16} />
@@ -469,7 +451,7 @@ export default function RestoApp() {
 
             {isAdmin && (
               <button
-                onClick={() => { setRoute('history'); setIsMobileMenuOpen(false); }}
+                onClick={() => setRoute('history')}
                 className={`nav-item ${route === 'history' ? 'active' : ''}`}
               >
                 <Icon name="clock" size={16} />
@@ -479,7 +461,7 @@ export default function RestoApp() {
 
             {isAdmin && (
               <button
-                onClick={() => { setRoute('dashboard'); setIsMobileMenuOpen(false); }}
+                onClick={() => setRoute('dashboard')}
                 className={`nav-item ${route === 'dashboard' ? 'active' : ''}`}
               >
                 <Icon name="chart" size={16} />
@@ -777,26 +759,8 @@ export default function RestoApp() {
 
         /* Mobile specific layouts */
         @media (max-width: 768px) {
-          .mobile-menu-toggle {
-            display: block !important;
-          }
-          
           .app-sidebar {
-            display: none;
-          }
-          
-          .mobile-nav-active .app-sidebar {
-            display: flex !important;
-            position: fixed;
-            top: 56px;
-            left: 0;
-            right: 0;
-            bottom: 60px;
-            z-index: 100;
-            background: var(--bg-elev);
-            width: 100%;
-            border-right: none;
-            box-shadow: var(--shadow-lg);
+            display: none !important;
           }
         }
       `}</style>

@@ -21,35 +21,40 @@ export function LoginScreen({ currentUser, setCurrentUser, setToast }: AuthProps
     setToast({ message: "Успешный вход в гостевом режиме", type: "success" });
   };
 
+  const tryLogin = (pinToCheck: string) => {
+    const match = ADMINS.find(admin => admin.pin === pinToCheck);
+    if (match) {
+      setTimeout(() => {
+        setCurrentUser({
+          name: `${match.name} (${match.role})`,
+          role: "admin",
+          adminId: match.id
+        });
+        setToast({ message: `Добро пожаловать, ${match.name}!`, type: "success" });
+        setPin('');
+        setShowPinPad(false);
+      }, 150);
+    } else {
+      setTimeout(() => {
+        setShake(true);
+        setToast({ message: "Неверный PIN-код", type: "error" });
+        setTimeout(() => {
+          setShake(false);
+          setPin('');
+        }, 400);
+      }, 150);
+    }
+  };
+
   const handleKeyPress = (num: string) => {
     if (pin.length >= 4) return;
     const newPin = pin + num;
     setPin(newPin);
 
-    // Auto check pin when reaches 4 digits
-    if (newPin.length === 4) {
-      const match = ADMINS.find(admin => admin.pin === newPin);
-      if (match) {
-        setTimeout(() => {
-          setCurrentUser({
-            name: `${match.name} (${match.role})`,
-            role: "admin",
-            adminId: match.id
-          });
-          setToast({ message: `Добро пожаловать, ${match.name}!`, type: "success" });
-          setPin('');
-          setShowPinPad(false);
-        }, 150);
-      } else {
-        setTimeout(() => {
-          setShake(true);
-          setToast({ message: "Неверный PIN-код", type: "error" });
-          setTimeout(() => {
-            setShake(false);
-            setPin('');
-          }, 400);
-        }, 150);
-      }
+    // Auto-login: check after each digit if PIN already matches
+    const match = ADMINS.find(admin => admin.pin === newPin);
+    if (match) {
+      tryLogin(newPin);
     }
   };
 
@@ -253,13 +258,34 @@ export function LoginScreen({ currentUser, setCurrentUser, setToast }: AuthProps
                 ←
               </button>
             </div>
+
+            {/* Login button */}
+            <button
+              onClick={() => pin.length > 0 && tryLogin(pin)}
+              disabled={pin.length === 0}
+              style={{
+                marginTop: '16px',
+                width: '100%',
+                height: '48px',
+                borderRadius: 'var(--radius)',
+                background: pin.length > 0 ? 'var(--accent)' : 'var(--bg-muted)',
+                color: pin.length > 0 ? 'white' : 'var(--muted)',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '15px',
+                cursor: pin.length > 0 ? 'pointer' : 'default',
+                transition: 'all 0.2s ease',
+                boxShadow: pin.length > 0 ? '0 4px 14px rgba(231, 111, 81, 0.35)' : 'none',
+                letterSpacing: '0.01em'
+              }}
+            >
+              Войти
+            </button>
           </div>
         )}
 
-        <div style={{ marginTop: '28px', fontSize: '10px', color: 'var(--muted)', fontWeight: 600 }}>
-          {!showPinPad 
-            ? "Разработано для планшетов и мобильных телефонов" 
-            : "Введите PIN Елены (1111), Аиши (2222), Алмаса (3333), Ергали (4444) или Еламана (5555)"}
+        <div style={{ marginTop: '20px', fontSize: '10px', color: 'var(--muted)', fontWeight: 600 }}>
+          Разработано для планшетов и мобильных телефонов
         </div>
       </div>
 
