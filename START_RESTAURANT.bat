@@ -25,20 +25,20 @@ if errorlevel 1 goto :build_failed
 echo [OK] Build verified. Starting server...
 echo.
 
-:: Detect local IP address
-set LOCAL_IP=localhost
-for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /i "IPv4" ^| findstr /v "127.0.0.1"') do (
-    set LOCAL_IP=%%a
-    goto :found_ip
-)
-:found_ip
-:: Trim spaces
-set LOCAL_IP=%LOCAL_IP: =%
-
+:: Detect and list local IP addresses
 echo ----------------------------------------------
 echo   Application is running:
 echo   Local:   http://localhost:3000
-echo   Network: http://%LOCAL_IP%:3000
+echo.
+echo   To connect from phones (on the same Wi-Fi),
+echo   open one of these links on your phone:
+setlocal enabledelayedexpansion
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /i "IPv4" ^| findstr /v "127.0.0.1"') do (
+    set IP_TEMP=%%a
+    set IP_TEMP=!IP_TEMP: =!
+    echo   - http://!IP_TEMP!:3000
+)
+endlocal
 echo ----------------------------------------------
 echo.
 
