@@ -46,7 +46,7 @@ echo.
 start "" cmd /c "timeout /t 2 /nobreak >nul && start http://localhost:3000"
 
 :: Run production server
-call npm run start:lan
+call npm run start
 if errorlevel 1 goto :server_failed
 echo.
 echo [INFO] Server stopped.
