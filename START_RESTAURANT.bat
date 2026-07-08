@@ -47,7 +47,19 @@ start "" cmd /c "timeout /t 2 /nobreak >nul && start http://localhost:3000"
 
 :: Run production server
 call npm run start:lan
+if errorlevel 1 goto :server_failed
+echo.
+echo [INFO] Server stopped.
+pause
 goto :eof
+
+:server_failed
+echo.
+echo [ERROR] Server failed to start or crashed.
+echo Please check if port 3000 is already occupied by another server.
+echo.
+pause
+exit /b 1
 
 :install_failed
 echo [ERROR] npm install failed. Please make sure Node.js is installed.
