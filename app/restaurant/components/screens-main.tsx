@@ -280,6 +280,7 @@ export function BookingsScreen({
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   gap: '16px',
+                  flexWrap: 'wrap',
                   boxShadow: 'var(--shadow-sm)'
                 }}
               >
@@ -986,13 +987,13 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
 
         {/* Date presets and buttons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid var(--border)', paddingTop: '12px', marginTop: '4px' }}>
-          <div style={{ display: 'flex', gap: '6px' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             <button className="btn" style={{ height: '30px', padding: '0 10px', fontSize: '11px' }} onClick={() => setPreset('today')}>За сегодня</button>
             <button className="btn" style={{ height: '30px', padding: '0 10px', fontSize: '11px' }} onClick={() => setPreset('month')}>За этот месяц</button>
             <button className="btn" style={{ height: '30px', padding: '0 10px', fontSize: '11px' }} onClick={() => setPreset('all')}>За всё время</button>
           </div>
 
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button
               onClick={handleClearHistory}
               className="btn danger"
@@ -1021,7 +1022,7 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
       </div>
 
       {/* Summary Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', marginBottom: '16px' }}>
         <div style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '12px 16px', boxShadow: 'var(--shadow-sm)' }}>
           <span style={{ fontSize: '10px', color: 'var(--muted)', fontWeight: 600 }}>ОБСЛУЖЕНО СТОЛОВ</span>
           <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--fg)', marginTop: '2px' }}>{filteredSessions.length}</div>
@@ -1183,7 +1184,8 @@ export function TasksScreen({ tasks, setTasks, currentUser, setToast }: TasksScr
             color: 'var(--fg)',
             padding: '0 14px',
             fontSize: '13px',
-            fontWeight: 500
+            fontWeight: 500,
+            minWidth: '0'
           }}
         />
         <button
@@ -1206,7 +1208,7 @@ export function TasksScreen({ tasks, setTasks, currentUser, setToast }: TasksScr
       </form>
 
       {/* Lists Container */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', overflow: 'hidden' }} className="tasks-layout-grid">
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', overflowY: 'auto' }} className="tasks-layout-grid">
         {/* Active Tasks Column */}
         <div style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px', overflow: 'hidden' }}>
           <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--fg)', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
