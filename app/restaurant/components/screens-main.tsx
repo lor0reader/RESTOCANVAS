@@ -947,7 +947,7 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
           </div>
 
           {/* Date from */}
-          <div style={{ width: '130px' }}>
+          <div style={{ flex: 1, minWidth: '140px' }}>
             <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '4px' }}>ДАТА С</label>
             <input
               type="date"
@@ -958,7 +958,7 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
           </div>
 
           {/* Date to */}
-          <div style={{ width: '130px' }}>
+          <div style={{ flex: 1, minWidth: '140px' }}>
             <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '4px' }}>ДАТА ПО</label>
             <input
               type="date"
@@ -969,7 +969,7 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
           </div>
 
           {/* Payment Method */}
-          <div style={{ width: '140px' }}>
+          <div style={{ flex: 1, minWidth: '140px' }}>
             <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '4px' }}>ОПЛАТА</label>
             <select
               value={filterPayment}
