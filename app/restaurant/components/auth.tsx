@@ -47,15 +47,17 @@ export function LoginScreen({ currentUser, setCurrentUser, setToast }: AuthProps
   };
 
   const handleKeyPress = (num: string) => {
-    if (pin.length >= 4) return;
-    const newPin = pin + num;
-    setPin(newPin);
-
-    // Auto-login: check after each digit if PIN already matches
-    const match = ADMINS.find(admin => admin.pin === newPin);
-    if (match) {
-      tryLogin(newPin);
-    }
+    setPin(prev => {
+      if (prev.length >= 4) return prev;
+      const newPin = prev + num;
+      
+      // Auto-login: check after each digit if PIN already matches
+      const match = ADMINS.find(admin => admin.pin === newPin);
+      if (match) {
+        setTimeout(() => tryLogin(newPin), 50);
+      }
+      return newPin;
+    });
   };
 
   const handleClear = () => {
