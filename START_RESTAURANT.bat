@@ -1,61 +1,60 @@
 @echo off
-chcp 65001 >nul
-title RestoCanvas - Запуск сервера
+title RestoCanvas - Server Startup
 
 echo ==============================================
-echo       RestoCanvas - Запуск ресторана
+echo       RestoCanvas - Restaurant Server
 echo ==============================================
 echo.
 
 cd /d "%~dp0"
 
-:: Проверяем наличие node_modules. Если их нет, запускаем установку.
+:: Check for node_modules folder
 if exist "node_modules" goto :has_deps
-echo [!] Папка node_modules не найдена. Устанавливаем зависимости...
+echo [!] node_modules folder not found. Installing dependencies...
 call npm install
 if errorlevel 1 goto :install_failed
 
 :has_deps
-:: Проверяем наличие сборки .next
+:: Check for production build
 if exist ".next" goto :has_build
-echo [!] Сборка не найдена. Запускаем сборку проекта...
+echo [!] Production build not found. Building project...
 call npm run next:build
 if errorlevel 1 goto :build_failed
 
 :has_build
-echo [OK] Сборка проверена. Запускаем сервер...
+echo [OK] Build verified. Starting server...
 echo.
 
-:: Попытка определить локальный IP для работы с телефонов
+:: Detect local IP address
 set LOCAL_IP=localhost
 for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /i "IPv4" ^| findstr /v "127.0.0.1"') do (
     set LOCAL_IP=%%a
     goto :found_ip
 )
 :found_ip
-:: Удаляем лишние пробелы из IP-адреса
+:: Trim spaces
 set LOCAL_IP=%LOCAL_IP: =%
 
 echo ----------------------------------------------
-echo   Приложение доступно по адресам:
-echo   Локально: http://localhost:3000
-echo   В сети:   http://%LOCAL_IP%:3000
+echo   Application is running:
+echo   Local:   http://localhost:3000
+echo   Network: http://%LOCAL_IP%:3000
 echo ----------------------------------------------
 echo.
 
-:: Автоматически открываем браузер через 2 секунды после запуска
+:: Open browser automatically after 2 seconds
 start "" cmd /c "timeout /t 2 /nobreak >nul && start http://localhost:3000"
 
-:: Запуск Next.js сервера на сетевом интерфейсе
+:: Run production server
 call npm run start:lan
 goto :eof
 
 :install_failed
-echo [ОШИБКА] Не удалось установить зависимости (npm install). Убедитесь, что NodeJS установлен.
+echo [ERROR] npm install failed. Please make sure Node.js is installed.
 pause
 exit /b 1
 
 :build_failed
-echo [ОШИБКА] Сборка проекта (next build) завершилась с ошибкой.
+echo [ERROR] next build failed.
 pause
 exit /b 1
