@@ -303,12 +303,14 @@ export default function RestoApp() {
   const canEditCanvas = currentUser.role === 'admin' && (
     currentUser.adminId === 'adm-almas' ||
     currentUser.adminId === 'adm-ergali' ||
-    currentUser.adminId === 'adm-elaman'
+    currentUser.adminId === 'adm-elaman' ||
+    currentUser.adminId === 'adm-adelya'
   );
   const canManageDb = currentUser.role === 'admin' && (
     currentUser.adminId === 'adm-almas' ||
     currentUser.adminId === 'adm-ergali' ||
-    currentUser.adminId === 'adm-elaman'
+    currentUser.adminId === 'adm-elaman' ||
+    currentUser.adminId === 'adm-adelya'
   );
 
   return (
