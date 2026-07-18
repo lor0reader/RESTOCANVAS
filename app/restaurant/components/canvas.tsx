@@ -491,7 +491,7 @@ export function TableCanvas({
     // 3. Mark table status as cleaning
     setTables(prev => prev.map(t => t.id === checkoutTableId ? { ...t, status: 'cleaning' as const } : t));
 
-    setToast({ message: `Счет оплачен на сумму ${newSession.billAmount} ₸`, type: 'success' });
+    setToast({ message: `Стол закрыт. Способ оплаты: ${checkoutPaymentMethod === 'card' ? 'Карта' : checkoutPaymentMethod === 'cash' ? 'Наличные' : checkoutPaymentMethod === 'qr' ? 'Kaspi / QR' : 'Списание'}`, type: 'success' });
     setCheckoutTableId(null);
   };
 
@@ -759,6 +759,11 @@ export function TableCanvas({
                     <Icon name="user" size={10} style={{ verticalAlign: 'middle', marginRight: '2px' }} />
                     {table.capacity}
                   </div>
+                  {displayStatus === 'occupied' && hasBooking?.waiterName && (
+                    <div style={{ fontSize: '9px', color: 'inherit', opacity: 0.85, fontWeight: 600, marginTop: '1px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: `${table.w - 8}px` }}>
+                      {hasBooking.waiterName}
+                    </div>
+                  )}
                 </div>
 
                 {/* Yurt shanyrak roof details */}
@@ -1352,18 +1357,7 @@ export function TableCanvas({
             <div>Официант: <strong>{checkoutWaiter || 'Не указан'}</strong></div>
             <div>Время открытия: <strong>{checkoutTableId && getActiveBooking(checkoutTableId) ? new Date(getActiveBooking(checkoutTableId)!.checkInTime || getActiveBooking(checkoutTableId)!.dateTime).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : '—'}</strong></div>
           </div>
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Сумма счета (₸) *</label>
-            <input
-              type="number"
-              required
-              min={0}
-              placeholder="Введите сумму счета в тенге..."
-              value={checkoutBillAmount || ''}
-              onChange={(e) => setCheckoutBillAmount(parseInt(e.target.value) || 0)}
-              style={{ width: '100%', height: '38px', borderRadius: '6px', border: '1px solid var(--border-strong)', background: 'var(--bg)', color: 'var(--fg)', padding: '0 10px', fontSize: '16px', fontWeight: 'bold' }}
-            />
-          </div>
+
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Способ оплаты *</label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>

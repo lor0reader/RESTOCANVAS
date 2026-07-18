@@ -756,7 +756,6 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
     <Cell><Data ss:Type="String">${formatDate(s.checkOutTime)}</Data></Cell>
     <Cell><Data ss:Type="String">${s.waiterName.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</Data></Cell>
     <Cell><Data ss:Type="String">${paymentLabel(s.paymentMethod)}</Data></Cell>
-    <Cell><Data ss:Type="Number">${s.billAmount}</Data></Cell>
     <Cell><Data ss:Type="String">${(s.notes || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, ' ')}</Data></Cell>
    </Row>`).join('');
 
@@ -811,7 +810,6 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
         <td style="padding: 8px 10px; border-bottom: 1px solid #dee2e6;">${formatDate(s.checkOutTime)}</td>
         <td style="padding: 8px 10px; border-bottom: 1px solid #dee2e6;">${s.waiterName}</td>
         <td style="padding: 8px 10px; border-bottom: 1px solid #dee2e6;">${paymentLabel(s.paymentMethod)}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #dee2e6; text-align: right; font-weight: bold;">${s.billAmount.toLocaleString('ru-RU')} ₸</td>
       </tr>
     `).join('');
 
@@ -851,16 +849,8 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
           
           <div class="stats">
             <div class="stat-box">
-              <span class="stat-label">Выручка</span>
-              <span class="stat-value">${totalRevenue.toLocaleString('ru-RU')} ₸</span>
-            </div>
-            <div class="stat-box">
               <span class="stat-label">Обслужено гостей</span>
               <span class="stat-value">${filteredSessions.reduce((sum, s) => sum + s.guestsCount, 0)}</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-label">Средний чек</span>
-              <span class="stat-value">${averageBill.toLocaleString('ru-RU')} ₸</span>
             </div>
             <div class="stat-box">
               <span class="stat-label">Всего заказов</span>
@@ -878,7 +868,6 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
                 <th>Закрытие</th>
                 <th>Официант</th>
                 <th>Оплата</th>
-                <th style="text-align: right;">Сумма</th>
               </tr>
             </thead>
             <tbody>
@@ -1027,14 +1016,6 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
           <span style={{ fontSize: '10px', color: 'var(--muted)', fontWeight: 600 }}>ОБСЛУЖЕНО СТОЛОВ</span>
           <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--fg)', marginTop: '2px' }}>{filteredSessions.length}</div>
         </div>
-        <div style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '12px 16px', boxShadow: 'var(--shadow-sm)' }}>
-          <span style={{ fontSize: '10px', color: 'var(--muted)', fontWeight: 600 }}>ОБЩАЯ ВЫРУЧКА</span>
-          <div style={{ fontSize: '22px', fontWeight: 800, color: '#2a9d8f', marginTop: '2px' }}>{totalRevenue.toLocaleString('ru-RU')} ₸</div>
-        </div>
-        <div style={{ background: 'var(--bg-elev)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '12px 16px', boxShadow: 'var(--shadow-sm)' }}>
-          <span style={{ fontSize: '10px', color: 'var(--muted)', fontWeight: 600 }}>СРЕДНИЙ ЧЕК</span>
-          <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--accent)', marginTop: '2px' }}>{averageBill.toLocaleString('ru-RU')} ₸</div>
-        </div>
       </div>
 
       {/* Table view */}
@@ -1048,13 +1029,12 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
             <table style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' }}>
               <thead>
                 <tr style={{ background: 'var(--bg-muted)', borderBottom: '1px solid var(--border)', color: 'var(--muted)', fontWeight: 700 }}>
-                  <th style={{ padding: '10px 16px', width: '25%', minWidth: '180px' }}>Стол</th>
-                  <th style={{ padding: '10px 16px', width: '20%', minWidth: '130px' }}>Посадка</th>
-                  <th style={{ padding: '10px 16px', width: '10%', minWidth: '80px' }}>Расчет</th>
+                  <th style={{ padding: '10px 16px', width: '30%', minWidth: '180px' }}>Стол</th>
+                  <th style={{ padding: '10px 16px', width: '25%', minWidth: '130px' }}>Посадка</th>
+                  <th style={{ padding: '10px 16px', width: '15%', minWidth: '80px' }}>Расчет</th>
                   <th style={{ padding: '10px 16px', width: '15%', minWidth: '110px' }}>Официант</th>
                   <th style={{ padding: '10px 16px', textAlign: 'center', width: '10%', minWidth: '80px' }}>Гостей</th>
-                  <th style={{ padding: '10px 16px', textAlign: 'right', width: '10%', minWidth: '100px' }}>Счет</th>
-                  <th style={{ padding: '10px 16px', textAlign: 'center', width: '10%', minWidth: '100px' }}>Оплата</th>
+                  <th style={{ padding: '10px 16px', textAlign: 'center', width: '15%', minWidth: '100px' }}>Оплата</th>
                 </tr>
               </thead>
               <tbody>
@@ -1075,7 +1055,6 @@ export function HistoryScreen({ sessions, setSessions, setToast }: HistoryScreen
                       <td style={{ padding: '12px 16px' }}>{formatTime(s.checkOutTime)}</td>
                       <td style={{ padding: '12px 16px', fontWeight: 500 }}>{s.waiterName}</td>
                       <td style={{ padding: '12px 16px', textAlign: 'center' }}>{s.guestsCount}</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'right', fontWeight: 700, color: 'var(--fg)' }}>{s.billAmount.toLocaleString('ru-RU')} ₸</td>
                       <td style={{ padding: '12px 16px', textAlign: 'center' }}>
                         <span style={{
                           fontSize: '10px',
